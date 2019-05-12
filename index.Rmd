@@ -22,9 +22,7 @@ source("./r_scripts/data.R")
 Inputs {.sidebar}
 -------------------------------------
 
-El siguiente dashboard muestra Resultados Parciales de las Elecciones a Gobernador para la Provincia de Córdoba en base a datos obtenidos del escrutinio paralelo realizado por Desarrollo Digital y Open Data Córdoba.
-
-Hecho por [Patricio Del Boca](https://twitter.com/pdelboca) para [Open Data Córdoba](https://twitter.com/opendatacba).
+Este dashboard muestra Resultados Parciales de las Elecciones a Gobernador para la Provincia de Córdoba en base a datos obtenidos del escrutinio paralelo realizado por Desarrollo Digital y Open Data Córdoba.
 
 12 de Mayo 2019.
 
