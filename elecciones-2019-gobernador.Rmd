@@ -8,7 +8,10 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(tidyverse)
+#library(kableExtra)
 library(leaflet)
+library(DT)
 source("./r_scripts/data.R")
 ```
 
@@ -45,8 +48,15 @@ gauge(porc_mesas, min = 0, max=100, symbol = "%")
 ```
    
 
-Column {data-width=600}
+Column {.tabset data-width=600}
 -------------------------------------
+
+### Total por Seccion
+```{r}
+seccion %>%
+  knitr::kable()
+```
+
    
 ### Mapa de la Provincia
 
@@ -56,3 +66,10 @@ m <- leaflet() %>%
   addMarkers(lng=circuitos_resultados$lng, lat=circuitos_resultados$lat)
 m
 ```   
+
+### Mesas Escrutadas
+
+```{r}
+# DT::datatable(mesas)
+```
+
