@@ -14,6 +14,8 @@ library(tidyverse)
 library(leaflet)
 library(DT)
 library(ggplot2)
+library(htmlwidgets)
+library(htmltools)
 source("./r_scripts/data.R")
 ```
 
@@ -24,16 +26,22 @@ El siguiente dashboard muestra Resultados Parciales de las Elecciones a Gobernad
 
 Hecho por [Patricio Del Boca](https://twitter.com/pdelboca) para [Open Data Córdoba](https://twitter.com/opendatacba).
 
-Mayo 2019.
+12 de Mayo 2019.
+
+-----
+
+Ultima Actualización:
+
+`r Sys.time()`
 
 Column {data-width=300}
 -------------------------------------
-    
-### Resultados Parciales
+### Última Actualización:
     
 ```{r}
-knitr::kable(posiciones)
+valueBox(format(Sys.time(), "%H:%M hs"), icon = "fa-clock")
 ```
+
 
 ### Mesas Escrutadas
     
@@ -48,7 +56,12 @@ valueBox(mesas_escrutadas, icon = "fa-pencil")
 porc_mesas <- mesas_escrutadas / CANT_MESAS * 100
 gauge(porc_mesas, min = 0, max=100, symbol = "%")
 ```
-   
+
+### Resultados Parciales
+    
+```{r}
+knitr::kable(posiciones)
+```
 
 Column {.tabset data-width=600}
 -------------------------------------
@@ -80,15 +93,29 @@ seccion %>%
 ### Mapa de la Provincia
 
 ```{r}
+tag.map.title <- tags$style(HTML("
+  .leaflet-control.map-title { 
+    transform: translate(-50%,20%);
+    left: 50%;
+    text-align: center;
+    padding-left: 10px; 
+    padding-right: 10px; 
+    background: rgba(255,255,255,0.75);
+    font-weight: bold;
+    font-size: 28px;
+  }
+"))
+
+title <- tags$div(
+  tag.map.title, HTML("Algunas de las Secciones ya Escrutadas.")
+)  
 m <- leaflet() %>% 
   addTiles() %>% 
-  addMarkers(lng=circuitos_resultados$lng, lat=circuitos_resultados$lat)
+  addMarkers(
+    lng=circuitos_resultados$lng, 
+    lat=circuitos_resultados$lat, 
+    popup = circuitos_resultados$circuito_nombre
+    )  %>%
+   addControl(title, position = "topright", className="map-title")
 m
 ```   
-
-### Mesas Escrutadas
-
-```{r}
-# DT::datatable(mesas)
-```
-
