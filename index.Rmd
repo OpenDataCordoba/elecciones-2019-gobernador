@@ -73,9 +73,9 @@ Column {.tabset data-width=600}
 posiciones %>% 
   mutate(lista = word(nombre_lista, -1, sep="_")) %>% 
   ggplot() +
-  geom_col(aes(x=reorder(lista, votos), y = votos)) +
+  geom_col(aes(x=reorder(lista, votos), y = votos), fill="steelblue") +
   coord_flip() +
-  theme_minimal() +
+  # theme_minimal() +
   labs(
     title = "Elecciones a Gobernador - Córdoba 2019",
     subtitle = paste0("Ultima Actualización: ", Sys.time()),
