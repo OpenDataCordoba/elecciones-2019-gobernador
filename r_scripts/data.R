@@ -9,7 +9,7 @@ CANT_MESAS <- 8653
 ############# Mesas
 # Resultado y datos de cada mesa.
 # Una columna por partido polítco.
-mesas <- read_csv("resultados-test.csv")
+mesas <- read_csv("resultados-parciales-gobernador-cordoba-2019.csv")
 colnames(mesas) <- str_replace_all(tolower(colnames(mesas))," ", "_")
 
 

@@ -24,6 +24,8 @@ Inputs {.sidebar}
 
 Este dashboard muestra Resultados Parciales de las Elecciones a Gobernador para la Provincia de Córdoba en base a datos obtenidos del escrutinio paralelo realizado por Desarrollo Digital y Open Data Córdoba.
 
+Resultados No Concluyentes, y realizado con datos de prueba.
+
 12 de Mayo 2019.
 
 -----
