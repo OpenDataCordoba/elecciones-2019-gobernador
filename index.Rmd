@@ -13,6 +13,7 @@ library(tidyverse)
 #library(kableExtra)
 library(leaflet)
 library(DT)
+library(ggplot2)
 source("./r_scripts/data.R")
 ```
 
@@ -51,6 +52,23 @@ gauge(porc_mesas, min = 0, max=100, symbol = "%")
 
 Column {.tabset data-width=600}
 -------------------------------------
+
+### Posiciones
+```{r}
+posiciones %>% 
+  mutate(lista = word(nombre_lista, -1, sep="_")) %>% 
+  ggplot() +
+  geom_col(aes(x=reorder(lista, votos), y = votos)) +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Elecciones a Gobernador - Córdoba 2019",
+    subtitle = paste0("Ultima Actualización: ", Sys.time()),
+    caption = "Open Data Córdba / Desarrollo Digital",
+    x = "Lista", y = "Votos"
+  )
+```
+
 
 ### Total por Seccion
 ```{r}
