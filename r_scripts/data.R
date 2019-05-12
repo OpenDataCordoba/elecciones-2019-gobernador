@@ -38,11 +38,12 @@ posiciones <- resultados %>%
 #   select(circuito_id = circuito, circuito_nombre = Circuito, lng = LONGITUD, lat = LATITUD)
 # write_csv(circuitos_geo, "circuitos_geo.csv")
 
-circuitos_geo <- read_csv("circuitos_geo.csv")
+circuitos_geo <- read_csv("circuitos_geo.csv") %>%
+  filter(!is.na(lat))
 
 circuitos_resultados <- resultados %>% 
   left_join(circuitos_geo, by=c("codigo_circuito" = "circuito_id")) %>%
-  group_by(codigo_circuito, lng, lat) %>%
+  group_by(codigo_circuito, circuito_nombre, lng, lat) %>%
   summarise(votos = sum(votos))
 
 ############# Sección
