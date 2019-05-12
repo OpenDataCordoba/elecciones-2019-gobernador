@@ -60,7 +60,9 @@ gauge(porc_mesas, min = 0, max=100, symbol = "%")
 ### Resultados Parciales
     
 ```{r}
-knitr::kable(posiciones)
+posiciones %>% 
+  mutate(nombre_lista = str_replace_all(nombre_lista, "_", " ")) %>% 
+  knitr::kable()
 ```
 
 Column {.tabset data-width=600}
@@ -107,7 +109,7 @@ tag.map.title <- tags$style(HTML("
 "))
 
 title <- tags$div(
-  tag.map.title, HTML("Algunas de las Secciones ya Escrutadas.")
+  tag.map.title, HTML("Secciones donde ya escrutamos algunas mesas.")
 )  
 m <- leaflet() %>% 
   addTiles() %>% 
