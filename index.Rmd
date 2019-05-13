@@ -1,0 +1,123 @@
+---
+title: "Resultados Parciales - Elección a Gobernador de la Provincia de Córdoba (2019)"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    output: "index.html"
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+#library(kableExtra)
+library(leaflet)
+library(DT)
+library(ggplot2)
+library(htmlwidgets)
+library(htmltools)
+source("./r_scripts/data.R")
+```
+
+Inputs {.sidebar}
+-------------------------------------
+
+Este dashboard muestra Resultados Parciales de las Elecciones a Gobernador para la Provincia de Córdoba en base a datos obtenidos del escrutinio paralelo realizado por Desarrollo Digital y Open Data Córdoba.
+
+Resultados No Concluyentes, y realizado con datos de prueba.
+
+12 de Mayo 2019.
+
+-----
+
+Ultima Actualización:
+
+`r Sys.time()`
+
+Column {data-width=300}
+-------------------------------------
+### Última Actualización:
+    
+```{r}
+valueBox(format(Sys.time(), "%H:%M hs"), icon = "fa-clock")
+```
+
+
+### Mesas Escrutadas
+    
+```{r}
+mesas_escrutadas <- nrow(mesas)
+valueBox(mesas_escrutadas, icon = "fa-pencil")
+```
+
+### Porcentaje Escrutado
+    
+```{r}
+porc_mesas <- round(mesas_escrutadas / CANT_MESAS * 100,2)
+gauge(porc_mesas, min = 0, max=100, symbol = "%")
+```
+
+### Resultados Parciales
+    
+```{r}
+posiciones %>% 
+  mutate(nombre_lista = str_replace_all(nombre_lista, "_", " ")) %>% 
+  knitr::kable()
+```
+
+Column {.tabset data-width=600}
+-------------------------------------
+
+### Posiciones
+```{r}
+posiciones %>% 
+  mutate(lista = word(nombre_lista, -1, sep="_")) %>% 
+  ggplot() +
+  geom_col(aes(x=reorder(lista, votos), y = votos), fill="steelblue") +
+  coord_flip() +
+  # theme_minimal() +
+  labs(
+    title = "Elecciones a Gobernador - Córdoba 2019",
+    subtitle = paste0("Ultima Actualización: ", Sys.time()),
+    caption = "Open Data Córdba / Desarrollo Digital",
+    x = "Lista", y = "Votos"
+  )
+```
+
+
+### Total por Seccion
+```{r}
+seccion %>%
+  knitr::kable()
+```
+
+   
+### Mapa de la Provincia
+
+```{r}
+tag.map.title <- tags$style(HTML("
+  .leaflet-control.map-title { 
+    transform: translate(-50%,20%);
+    left: 50%;
+    text-align: center;
+    padding-left: 10px; 
+    padding-right: 10px; 
+    background: rgba(255,255,255,0.75);
+    font-weight: bold;
+    font-size: 28px;
+  }
+"))
+
+title <- tags$div(
+  tag.map.title, HTML("Secciones donde ya escrutamos algunas mesas.")
+)  
+m <- leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(
+    lng=circuitos_resultados$lng, 
+    lat=circuitos_resultados$lat, 
+    popup = circuitos_resultados$circuito_nombre
+    )  %>%
+   addControl(title, position = "topright", className="map-title")
+m
+```   
